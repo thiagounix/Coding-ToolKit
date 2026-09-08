@@ -1,0 +1,17 @@
+{
+  "description": "Orientação opcional em português no início da sessão.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/CAMINHO/DO/PROJETO/.codex/hooks/session-start.mjs\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+# [NOME DO PROJETO]
+
+## Comunicação e execução
+
+- Responda em português do Brasil. Preserve identificadores, APIs e erros literais.
+- Leia o fluxo atual antes de editar e declare premissas relevantes.
+- Implemente o trabalho solicitado até verificá-lo. Pergunte quando faltar uma decisão necessária.
+- Reutilize padrões e mantenha a mudança no escopo do pedido.
+- Preserve alterações preexistentes. Não inclua arquivos alheios em commits.
+- O agente principal pode implementar. Use subagentes quando solicitados ou previstos nas instruções aplicáveis, com tarefas independentes e ferramentas disponíveis.
+- Não invente ferramentas, resultados de testes, acesso externo ou modelo ativo.
+
+## Tecnologias e estrutura
+
+[Preencha linguagens, bibliotecas, versões e gerenciador de pacotes.]
+
+[Liste pastas principais e limites de responsabilidade.]
+
+## Comandos verificados
+
+Execute em [DIRETÓRIO DO PACOTE OU SOLUÇÃO]. Preencha comandos reais e remova o que não se aplica.
+
+| Verificação | Comando |
+| --- | --- |
+| Instalação | [COMANDO] |
+| Lint | [COMANDO] |
+| Tipos | [COMANDO] |
+| Testes | [COMANDO] |
+| Compilação | [COMANDO] |
+| Desenvolvimento | [COMANDO] |
+
+## Convenções
+
+[Preencha padrões de importação, formatação, testes, erros e interfaces públicas.]
+
+## Qualidade e entrega
+
+- Registre falhas preexistentes e verifique efeitos colaterais.
+- Rode verificações proporcionais ao que mudou.
+- Não enfraqueça testes, regras ou limites para declarar sucesso.
+- Informe o que mudou, por quê, como foi verificado e o que ficou pendente.
+- Faça commit, publicação ou alterações externas dentro do escopo autorizado.
+
+## Contexto duradouro
+
+Se existir docs/memory/MEMORY.md, leia as entradas pertinentes antes de trabalho relacionado.
+Links são referências; leia explicitamente os documentos necessários.
+Só crie ou atualize memória quando solicitado, respeitando a política do ambiente.
+Não salve segredos, dados pessoais ou fatos temporários em memória.
+
+## Modelos
+
+Terra, Sol e Astra são opções do cliente; este arquivo não seleciona modelos.
+Use o modelo ativo e não simule trocas que a ferramenta não realizou.

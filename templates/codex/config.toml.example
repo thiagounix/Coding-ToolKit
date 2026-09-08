@@ -1,0 +1,10 @@
+# Incorpore estes campos ao config.toml existente.
+# Sol é o padrão sugerido; confirme o acesso no cliente.
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+
+# Alternativas: substitua o valor acima; não duplique a chave model.
+# model = "gpt-5.6-terra"
+# model = "gpt-6-astra"
+
+# Preserve as configurações existentes de permissões, autenticação e MCP.

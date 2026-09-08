@@ -1,87 +1,82 @@
-# Instalação
+# Instalação para Codex no VS Code
 
-Referência rápida — comandos, sem enrolação. Para o passo a passo narrado,
-com exemplo em cada etapa, veja o
-[Playbook de onboarding](02-playbook-onboarding.md).
+## 1. Preparar o editor
 
-> Comandos e nomes de marketplace verificados em **15 de agosto de 2026**. Esse
-> ecossistema muda em semanas, não em anos — se algum comando abaixo não bater
-> com o que seu agente realmente executa, [abra uma
-> issue](https://github.com/soumatheusgomes/vibe-coding-toolkit/issues) em vez
-> de assumir que o erro é seu.
+Instale ou habilite a extensão **Codex**, publicada pela **OpenAI**, no VS Code, abra seu painel e autentique-se pelo fluxo oferecido. Se já usa a extensão, aproveite a instalação existente.
 
-## 1. Claude Code
+A [documentação oficial da extensão](https://learn.chatgpt.com/docs/codex/ide) descreve instalação e autenticação. A lista de modelos depende da conta e do ambiente.
 
-O Claude Code é o CLI (interface de linha de comando) que roda tudo daqui
-pra frente — plugins, hooks, subagentes. É o pré-requisito antes de qualquer
-outro passo abaixo.
+Abra a pasta do projeto de destino. O toolkit fornece modelos de arquivo; copiar seus exemplos não instala dependências da aplicação.
 
-```bash
-npm install -g @anthropic-ai/claude-code
+## 2. Preparar as instruções
+
+No PowerShell, a partir do projeto de destino, ajuste o caminho desta cópia:
+
+```powershell
+$toolkitPath = 'C:\Users\thiago.barros\source\Vibe-Coding-Toolkit\vibe-coding-toolkit'
+if (Test-Path -LiteralPath './AGENTS.md') {
+    Write-Output 'AGENTS.md já existe. Incorpore as orientações relevantes manualmente.'
+} else {
+    Copy-Item -LiteralPath (Join-Path $toolkitPath 'templates/AGENTS.md.template') -Destination './AGENTS.md'
+}
 ```
 
-Confirme que ficou disponível no seu `PATH`:
+Preencha tecnologia, diretório de execução e comandos de instalação, lint, testes e compilação. Remova itens não aplicáveis. Examine eventuais `AGENTS.override.md` e instruções ancestrais.
 
-```bash
-claude --version
+O nome descoberto pelo Codex é `AGENTS.md`; `AGENTS.md.template` é apenas o modelo fornecido aqui. Consulte a [hierarquia de instruções](https://learn.chatgpt.com/docs/agent-configuration/agents-md).
+
+## 3. Escolher o modelo
+
+Use o seletor da extensão. Para um padrão persistente, abra a engrenagem do Codex e a opção para editar `config.toml`. Incorpore os campos de [config.toml.example](../templates/codex/config.toml.example), preservando as demais opções.
+
+```toml
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
 ```
 
-Detalhes completos de instalação e autenticação:
-[documentação oficial do Claude Code](https://docs.claude.com/en/docs/claude-code).
+Alternativas: `gpt-5.6-terra` e `gpt-6-astra`. Use um único valor para `model`. Veja o [guia de modelos](03-modelos-codex.md).
 
-## 2. Plugins e CLIs independentes
+A configuração pessoal fica em `~/.codex/config.toml`; no Windows, normalmente em `C:\Users\SEU_USUARIO\.codex\config.toml`. Projetos confiáveis podem usar `.codex/config.toml`. CLI e extensão compartilham camadas, mas substituições da sessão podem afetar o valor aplicado. Veja a [configuração oficial](https://learn.chatgpt.com/docs/config-file/config-basic).
 
-> 💬 **O jeito mais fácil: peça pro seu agente instalar.**
->
-> ```
-> Instale [nome da ferramenta] pra mim: rode `[comando 1]`[, depois `[comando 2]`].
-> ```
->
-> O Claude Code tem acesso a terminal (Bash) — ele roda os comandos por você e confirma que funcionou. Você não precisa abrir um terminal separado nem saber a diferença entre `pip`, `uv` e `npm`. Prefere fazer você mesmo? Os comandos abaixo são exatamente os mesmos, é só rodar direto no seu terminal.
+## 4. CLI opcional
 
-Linhas com `/plugin` rodam de dentro de uma sessão `claude` — ou seja, já
-são o pedido pro agente, direto. Graphify e agent-browser não são plugins
-— são CLIs independentes, instaladas fora da sessão, com o gerenciador de
-pacote de cada um.
+A CLI serve para trabalhar no terminal; não é pré-requisito para o painel já instalado.
 
-| Ferramenta | Fonte | Instalação |
-|---|---|---|
-| Superpowers | `anthropics/claude-plugins-official` | `/plugin marketplace add anthropics/claude-plugins-official` → `/plugin install superpowers@claude-plugins-official` |
-| Ponytail | `DietrichGebert/ponytail` | `/plugin marketplace add DietrichGebert/ponytail` → `/plugin install ponytail@ponytail` |
-| Caveman | `JuliusBrussee/caveman` | `/plugin marketplace add JuliusBrussee/caveman` → `/plugin install caveman@caveman` |
-| aia-harness | `leandrosilvaferreira/claude-plugins-registry` | `/plugin marketplace add leandrosilvaferreira/claude-plugins-registry` → `/plugin install aia-harness@leandro-plugins-registry` |
-| hookify, pr-review-toolkit, commit-commands, claude-code-setup, feature-dev, code-review, claude-md-management | `anthropics/claude-plugins-official` | `/plugin install <nome>@claude-plugins-official` |
-| ui-ux-pro-max | `nextlevelbuilder/ui-ux-pro-max-skill` | `/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill` → `/plugin install ui-ux-pro-max@ui-ux-pro-max-skill` |
-| Graphify | pacote Python `graphifyy` (não é plugin) | `uv tool install graphifyy` → `graphify claude install` |
-| agent-browser | CLI npm (não é plugin) | `npm i -g agent-browser && agent-browser install` |
+```powershell
+npm install -g @openai/codex
+codex --version
+codex --help
+```
 
-A linha `hookify, pr-review-toolkit, ...` reaproveita a mesma marketplace do
-Superpowers (`anthropics/claude-plugins-official`) — se você já rodou aquele
-`/plugin marketplace add` lá em cima, não precisa rodar de novo, é só trocar
-`<nome>` pelo plugin desejado.
+Para iniciar uma sessão, execute apenas a linha desejada:
 
-O pacote no PyPI é `graphifyy`, com dois "y" — o comando instalado é
-`graphify`, com um só. `uv` (ou `pipx`) é preferido a um `pip install`
-solto: o próprio README do projeto avisa que `pip install` sozinho pode
-instalar o pacote num Python diferente daquele que o comando `graphify`
-resolve depois, causando erro de módulo não encontrado. Depois de instalar
-o pacote, conecte ao agente: `graphify claude install` (grava a seção do
-Graphify no `CLAUDE.md` e configura o hook, específico pro Claude Code) ou
-`graphify install` (detecta e registra em qualquer agente de IA instalado).
+```powershell
+codex --model gpt-5.6-terra
+codex --model gpt-5.6-sol
+codex --model gpt-6-astra
+```
 
-> ⚡ **Atalho: deixe o aia-harness montar a base pra você.**
->
-> O plugin `aia-harness` (linha acima) tem o comando `/aia-harness:init`, que escaneia o projeto e monta boa parte dessa estrutura sozinho — agentes especialistas, regras, hooks, memória, `settings.json`:
->
-> ```
-> /aia-harness:init
-> ```
->
-> Não quer montar tudo manualmente, peça por peça? Instale o plugin primeiro (tabela acima) e deixe ele fazer o trabalho pesado — depois use o resto deste repositório pra entender o que foi montado e por quê.
+Isso não altera uma conversa já aberta no VS Code. Consulte a [CLI oficial](https://learn.chatgpt.com/docs/codex/cli).
 
-## Quer o passo a passo completo?
+## 5. Recursos opcionais
 
-Essa página é só o cheat sheet. Para entender o motivo de cada peça, ver
-exemplo de uso, e configurar hooks, memória de longo prazo e o template de
-projeto com calma, vá para o
-[Playbook de onboarding](02-playbook-onboarding.md).
+| Recurso | Como adotar |
+| --- | --- |
+| Skills | Consulte [skills no Codex](tools/13-codex-skills.md) |
+| Subagentes | Solicite delegação e use o [protocolo](tools/02-subagent-orchestration.md) |
+| MCP | Siga a [documentação MCP](https://learn.chatgpt.com/docs/extend/mcp), sem duplicar conexões |
+| Hooks | Revise scripts e siga o [guia](tools/10-hooks-best-practices.md) |
+| Memória | Use o [prompt 06](prompts/06-memory-bootstrap.md) quando quiser criar documentação local |
+| ESLint | Para JavaScript/TypeScript, use o [prompt 08](prompts/08-eslint-quality-gates-install.md) |
+
+## 6. Conferir
+
+Abra uma nova conversa no projeto e peça:
+
+```text
+Liste as instruções de projeto que você recebeu e os comandos de verificação
+definidos nelas. Responda em português do Brasil. Não altere arquivos.
+Se não conseguir confirmar o modelo ativo, diga isso; não deduza pelo prompt.
+```
+
+Confira o modelo na interface. Execute uma tarefa pequena e revise o diff. O [guia prático](02-playbook-onboarding.md) mostra esse percurso.

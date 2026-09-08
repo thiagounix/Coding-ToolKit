@@ -207,7 +207,7 @@ export default defineConfig([
     // the application this config polices. Without these, Node-runtime
     // scripts that never declared Node globals drown real findings in
     // no-undef noise.
-    ".claude/**",
+    // Configure project-owned .codex/.agents scripts separately if necessary.
     ".github/agents/**",
     ".github/hooks/**",
     ".github/skills/**",
